@@ -6,14 +6,18 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     private List<Rigidbody2D> points = new List<Rigidbody2D>(); // liste des points du blop (on gère que les RB)
-    private Dictionary<SpringJoint2D, float> originalDistances = new Dictionary<SpringJoint2D, float>();
+    private Dictionary<SpringJoint2D, float> springDistance = new Dictionary<SpringJoint2D, float>();
 
-    public float maxSpeed = 10.0f;
+    private Rigidbody2D eyes;
+
+    public float maxSpeed = 3f;
     public float acceleration = 5.0f; 
-    public float deceleration = 5.0f; 
+    public float deceleration = 15.0f; 
     public float growthFactor = 1.2f;
     public float shrinkFactor = 0.8f;
 
+    private float newEyesVelocityX = 0f;
+    private float targetDeceleration = 0f;
     private float targetVelocity = 0f;
     private float currentVelocity = 0f;
     private bool isMoving = false;
@@ -21,6 +25,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        eyes = transform.GetChild(7).GetComponent<Rigidbody2D>();
+        Debug.Log(eyes.name);
         // récupéré tout les rigidbody des points
         foreach (Transform child in transform)
         {
@@ -33,12 +39,13 @@ public class Player : MonoBehaviour
             // Sauvegarde de la distance d'origine de chaque SpringJoint2D
             foreach (SpringJoint2D joint in child.GetComponents<SpringJoint2D>())
             {
-                originalDistances[joint] = joint.distance;
+                springDistance[joint] = joint.distance;
             }
+
         }
 
         //change all Joint Distance to shrinkFactor:
-        foreach (var segment in originalDistances)
+        foreach (var segment in springDistance)
         {
             SpringJoint2D joint = segment.Key;
             float originalDistance = segment.Value;
@@ -68,24 +75,60 @@ public class Player : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void Update()
     {
         if (isMoving)
         {
             //accéleration
-            currentVelocity = Mathf.Lerp(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+            currentVelocity = Mathf.Lerp(currentVelocity, targetVelocity, acceleration * Time.deltaTime);
         }
         else
         {
             // décélération
-            currentVelocity = Mathf.Lerp(currentVelocity, 0, deceleration * Time.fixedDeltaTime);
+            //targetDeceleration = -currentVelocity * 0.5f;
+            currentVelocity = Mathf.Lerp(currentVelocity, 0, deceleration * Time.deltaTime);
+            //Debug.Log("Target Décélétaion " + targetDeceleration);
         }
 
-        // mettre la vitesse pour tout les point du blop
-        foreach (Rigidbody2D rb in points)
+        Debug.Log("Current Velocity " + currentVelocity);
+
+        newEyesVelocityX = currentVelocity * eyes.velocity.x;
+
+        if (newEyesVelocityX > 4)
         {
-            rb.velocity = new Vector2(currentVelocity, rb.velocity.y);
+            newEyesVelocityX = 4;
         }
+        else if (newEyesVelocityX < -4)
+        {
+            newEyesVelocityX = -4;
+        }
+
+        eyes.velocity = new Vector2(newEyesVelocityX, eyes.velocity.y) * Time.deltaTime;
+        Debug.Log("Eyes velocity X : " + newEyesVelocityX);
+    }
+
+    void FixedUpdate()
+    {
+        //if (isMoving)
+        //{
+        //    //accéleration
+        //    currentVelocity = Mathf.Lerp(currentVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
+        //    Debug.Log("Target Velocity " + targetVelocity);
+        //}
+        //else
+        //{
+        //    // décélération
+        //    //targetDeceleration = -currentVelocity * 0.5f;
+        //    currentVelocity = Mathf.Lerp(currentVelocity, 0, deceleration * Time.fixedDeltaTime);
+        //    //Debug.Log("Target Décélétaion " + targetDeceleration);
+        //}
+
+
+        // mettre la vitesse pour tout les point du blop
+        //foreach (Rigidbody2D rb in points)
+        //{
+        //    rb.velocity = new Vector2(currentVelocity, rb.velocity.y);
+        //}
     }
 
     public void GrowUp(InputAction.CallbackContext context)
@@ -93,6 +136,7 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             isGrowing = true;
+            Debug.Log("GrowUp");
             AdjustSpringJoints(growthFactor);
         }
         else if (context.canceled)
@@ -104,7 +148,7 @@ public class Player : MonoBehaviour
 
     private void AdjustSpringJoints(float factor)
     {
-        foreach (var segment in originalDistances)
+        foreach (var segment in springDistance)
         {
             SpringJoint2D joint = segment.Key;
             float originalDistance = segment.Value;
