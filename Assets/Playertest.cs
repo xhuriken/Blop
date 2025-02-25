@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Playertest : MonoBehaviour
 {
     private List<Rigidbody2D> points = new List<Rigidbody2D>(); // liste des points du blop (on gère que les RB)
     private Dictionary<SpringJoint2D, float> springDistance = new Dictionary<SpringJoint2D, float>();
 
-    private Rigidbody2D m_rb;
+    private Rigidbody2D eyes;
 
     public float maxSpeed = 3f;
-    public float acceleration = 5.0f; 
-    public float deceleration = 15.0f; 
-    public float envDeceleration = 15.0f;
+    public float acceleration = 5.0f;
+    public float deceleration = 15.0f;
     public float growthFactor = 1.2f;
     public float shrinkFactor = 0.8f;
 
     private float newEyesVelocityX = 0f;
+    private float targetDeceleration = 0f;
     private float targetVelocity = 0f;
     private float currentVelocity = 0f;
     private bool isMoving = false;
@@ -25,7 +25,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        m_rb = GetComponent<Rigidbody2D>();
+        eyes = transform.GetChild(7).GetComponent<Rigidbody2D>();
+        Debug.Log(eyes.name);
         // récupéré tout les rigidbody des points
         foreach (Transform child in transform)
         {
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour
             SpringJoint2D joint = segment.Key;
             float originalDistance = segment.Value;
 
- 
+
             joint.distance = originalDistance * shrinkFactor;
         }
 
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour
             //on applique la valeur du vecteur a la vitesse (pour que -1 et +1 devienne la MaxSpeed)
             //Après on pourra gérrer la décélération et acélération grace a 'targetVelocity'
             targetVelocity = moveInput * maxSpeed;
-            
+
             isMoving = true;
         }
         else if (context.canceled)
@@ -76,26 +77,42 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        newEyesVelocityX = currentVelocity + m_rb.velocity.x;
-
         if (isMoving)
         {
             //accéleration
-            currentVelocity = Mathf.Lerp(currentVelocity, targetVelocity, acceleration * Time.deltaTime);
+            currentVelocity = Mathf.Lerp(currentVelocity, targetVelocity, Time.deltaTime);
             Debug.Log("Current Velocity " + currentVelocity);
 
         }
         else
         {
             // décélération
-            currentVelocity = Mathf.Lerp(currentVelocity, 0, deceleration * Time.deltaTime);
-            Debug.Log("Current Velocity " + currentVelocity);
-            newEyesVelocityX = Mathf.Lerp(newEyesVelocityX, 0, envDeceleration * Time.deltaTime);
+            //targetDeceleration = -currentVelocity * 0.5f;
+            currentVelocity = Mathf.Lerp(currentVelocity, 0, Time.deltaTime);
+            //Debug.Log("Target Décélétaion " + targetDeceleration);
+
 
         }
-        newEyesVelocityX = Mathf.Clamp(newEyesVelocityX, -4, 4);
-        m_rb.velocity = new Vector2(newEyesVelocityX, m_rb.velocity.y);
-        Debug.Log("Eyes Velocity X: " + m_rb.velocity.x);
+
+
+        newEyesVelocityX = currentVelocity * eyes.velocity.x;
+
+        if (newEyesVelocityX > 4)
+        {
+            newEyesVelocityX = 4;
+        }
+        else if (newEyesVelocityX < -4)
+        {
+            newEyesVelocityX = -4;
+        }
+        if (newEyesVelocityX < 0.1f && newEyesVelocityX != 0f)
+        {
+            Debug.Log("Eyes velocity X : " + newEyesVelocityX);
+
+            newEyesVelocityX = 0;
+        }
+        eyes.velocity = new Vector2(newEyesVelocityX, eyes.velocity.y);
+
     }
 
     void FixedUpdate()
