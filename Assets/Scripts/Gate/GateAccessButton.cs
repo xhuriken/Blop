@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GateAccessButton : MonoBehaviour
 {
-    public Gate gate; // Assurez-vous que la référence à Gate est bien assignée dans l'Inspector
-    public float cooldownTime = 0.5f;
+    public Gate gate;
+    public float cooldownTime = 3f;
     public KeyCode activationKey = KeyCode.E;
 
     private bool isCooldown = false;

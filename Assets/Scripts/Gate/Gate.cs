@@ -3,8 +3,15 @@ using UnityEngine;
 public class Gate : MonoBehaviour
 {
     // Couleurs assignées via l'Inspector
-    public Color redColor = Color.red;
-    public Color blueColor = Color.blue;
+
+
+    // public Color redColor = Color.red;
+    // public Color blueColor = Color.blue;
+
+
+    // Les particules associées à la porte (à assigner via l'Inspector)
+    public ParticleSystem redParticles;
+    public ParticleSystem blueParticles;
     
     // Les tags autorisés
     public string tagOne = "RedBlop";
@@ -52,11 +59,19 @@ public class Gate : MonoBehaviour
         // Change la couleur de la Gate en fonction du tag
         if (tag == tagOne)
         {
-            gateRenderer.material.color = redColor; // Si le tag est "RedBlop", on applique la couleur rouge
+
+            redParticles.Play();
+            blueParticles.Stop();
+
+             // gateRenderer.material.color = redColor; // Si le tag est "RedBlop", on applique la couleur rouge
         }
         else if (tag == tagTwo)
         {
-            gateRenderer.material.color = blueColor; // Si le tag est "BlueBlop", on applique la couleur bleue
+
+            blueParticles.Play();
+            redParticles.Stop();
+
+            // gateRenderer.material.color = blueColor; // Si le tag est "BlueBlop", on applique la couleur bleue
         }
     }
 }
