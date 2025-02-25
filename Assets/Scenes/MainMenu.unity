@@ -7916,7 +7916,7 @@ MonoBehaviour:
   typewriterStartsAutomatically: 1
   animationLoop: 0
   timeScale: 0
-  _text: Game Title
+  _text: Blopy & Blopa
   useDynamicScaling: 0
   referenceFontSize: 10
   isResettingTimeOnNewText: 1
@@ -7931,7 +7931,7 @@ MonoBehaviour:
   defaultDisappearancesTags:
   - fade
   defaultBehaviorsTags:
-  - wave a=1
+  - wibble a=1
   defaultTagsMode: 0
 --- !u!1 &914569402
 GameObject:
