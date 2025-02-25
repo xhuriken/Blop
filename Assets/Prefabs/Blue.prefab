@@ -970,7 +970,7 @@ GameObject:
   - component: {fileID: 4621167148420519255}
   m_Layer: 8
   m_Name: Blue
-  m_TagString: Untagged
+  m_TagString: BlueBlop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1069,6 +1069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16200a497be458499b94dd0931f9bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathParticles: {fileID: 0}
   maxSpeed: 5
   acceleration: 5
   deceleration: 50

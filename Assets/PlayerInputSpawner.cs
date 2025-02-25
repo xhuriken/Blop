@@ -3,8 +3,9 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.InputSystem.Utilities;
 using Febucci.UI;
+using System;
 
-public class CustomPlayerManager : MonoBehaviour
+public class PlayerInputSpawner: MonoBehaviour
 {
     public GameObject player1Prefab; 
     public GameObject player2Prefab; 
@@ -47,8 +48,7 @@ public class CustomPlayerManager : MonoBehaviour
 
         if (player1Joined && player2Joined && joinText != null)
         {
-        joinType.ShowText("");
-
+            joinType.ShowText("");
         }
     }
 

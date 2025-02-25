@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D m_rb;
 
+    public ParticleSystem deathParticles;
     public float maxSpeed = 3f;
     public float acceleration = 5.0f;
     public float deceleration = 15.0f;
@@ -23,11 +24,13 @@ public class Player : MonoBehaviour
     private float currentVelocity = 0f;
     private bool isMoving = false;
     private bool isGrowing = false;
+    private bool isDead = false;
 
     private int groundedPointsCount = 0;
 
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         m_rb = GetComponent<Rigidbody2D>();
 
         foreach (Transform child in transform)
@@ -68,6 +71,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (isDead)
+        {
+            m_rb.velocity = Vector2.zero;
+            return;
+        }
+
         newEyesVelocityX = currentVelocity + m_rb.velocity.x;
 
         if (isMoving)
@@ -99,7 +108,7 @@ public class Player : MonoBehaviour
         {
             m_rb.velocity = new Vector2(newEyesVelocityX, m_rb.velocity.y);
         }
-    }
+    }   
 
     public void GrowUp(InputAction.CallbackContext context)
     {
@@ -135,5 +144,19 @@ public class Player : MonoBehaviour
         groundedPointsCount--;
         if (groundedPointsCount < 0)
             groundedPointsCount = 0;
+    }
+
+    public void Die()
+    {
+
+        Instantiate(deathParticles, transform.position, Quaternion.identity);
+        isDead = true;
+        
+    }
+
+    public IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(1.5f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
