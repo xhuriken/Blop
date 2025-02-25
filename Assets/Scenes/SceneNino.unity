@@ -3321,6 +3321,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button
       objectReference: {fileID: 0}
+    - target: {fileID: 890083885883551991, guid: 313c500ae09a4784582a49b6e52a5705, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 890083885883551991, guid: 313c500ae09a4784582a49b6e52a5705, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 890083885883551991, guid: 313c500ae09a4784582a49b6e52a5705, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408596415510199584, guid: 313c500ae09a4784582a49b6e52a5705, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7457218552923014594, guid: 313c500ae09a4784582a49b6e52a5705, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.28
