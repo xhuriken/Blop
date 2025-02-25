@@ -1,19 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    public string requiredTag = "RedBlop"; // Le tag requis initial
+    // Couleurs assignées via l'Inspector
+    public Color redColor = Color.red;
+    public Color blueColor = Color.blue;
+    
+    // Les tags autorisés
+    public string tagOne = "RedBlop";
+    public string tagTwo = "BlueBlop";
 
-    public void SetRequiredTag(string newTag)
+    // Tag requis actuellement (modifiable)
+    public string requiredTag;
+
+    private Renderer gateRenderer;
+
+    private void Start()
     {
-        requiredTag = newTag;
-        Debug.Log("Nouveau tag requis pour passer la Gate: " + requiredTag);
+        gateRenderer = GetComponent<Renderer>();
+
+        // Initialise la Gate avec la couleur correspondant au tag autorisé
+        SetGateTag(requiredTag);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
+        // Si le tag du Blop ne correspond pas au tag requis, le passage est bloqué
         if (!other.CompareTag(requiredTag))
         {
             KillPlayer(other.gameObject);
@@ -23,5 +35,28 @@ public class Gate : MonoBehaviour
     private void KillPlayer(GameObject player)
     {
         Debug.Log("Le joueur est tué.");
+    }
+
+    // Méthode pour alterner le tag et la couleur
+    public void ToggleGateTag()
+    {
+        // Alterne entre les deux tags
+        requiredTag = (requiredTag == tagOne) ? tagTwo : tagOne;
+
+        // Met à jour la couleur en fonction du tag
+        SetGateTag(requiredTag);
+    }
+
+    private void SetGateTag(string tag)
+    {
+        // Change la couleur de la Gate en fonction du tag
+        if (tag == tagOne)
+        {
+            gateRenderer.material.color = redColor; // Si le tag est "RedBlop", on applique la couleur rouge
+        }
+        else if (tag == tagTwo)
+        {
+            gateRenderer.material.color = blueColor; // Si le tag est "BlueBlop", on applique la couleur bleue
+        }
     }
 }

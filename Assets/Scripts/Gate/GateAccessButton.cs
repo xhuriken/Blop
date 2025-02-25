@@ -1,48 +1,46 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GateAccessButton : MonoBehaviour
 {
-    public GameObject gate; // Assignez l'objet Gate dans l'Inspector
-    public string tagOne = "RedBlop"; // Premier tag requis
-    public string tagTwo = "BlueBlop"; // Deuxième tag requis
-    public float cooldownTime = 2f; // Temps de cooldown en secondes
-    private bool useTagOne = true; // Indique quel tag utiliser
-    private bool isCooldown = false; // Indique si le bouton est en cooldown
-    private Gate gateScript;
+    public Gate gate; // Assurez-vous que la référence à Gate est bien assignée dans l'Inspector
+    public float cooldownTime = 0.5f;
+    public KeyCode activationKey = KeyCode.E;
 
-    void Start()
+    private bool isCooldown = false;
+    private Collider2D playerInRange;
+
+    private void Update()
     {
-        if (gate != null)
+        // Vérifie si le joueur est proche et appuie sur le bouton
+        if (playerInRange && Input.GetKeyDown(activationKey) && !isCooldown)
         {
-            gateScript = gate.GetComponent<Gate>();
+            ActivateButton();
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("RedBlop"))
+        // Détecte si un Blop est proche
+        if (other.CompareTag("RedBlop") || other.CompareTag("BlueBlop"))
         {
-            if (gateScript != null)
-            {
-                if (useTagOne)
-                {
-                    gateScript.SetRequiredTag(tagOne);
-                    Debug.Log("Tag requis pour la Gate changé en: " + tagOne);
-                }
-                else
-                {
-                    gateScript.SetRequiredTag(tagTwo);
-                    Debug.Log("Tag requis pour la Gate changé en: " + tagTwo);
-                }
-
-                // Alterne le tag requis pour la prochaine fois
-                useTagOne = !useTagOne;
-                
-                StartCoroutine(Cooldown());
-            }
+            playerInRange = other;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (playerInRange == other)
+        {
+            playerInRange = null;
+        }
+    }
+
+    private void ActivateButton()
+    {
+        // Change le tag autorisé et la couleur de la Gate
+        gate.ToggleGateTag();
+        StartCoroutine(Cooldown());
     }
 
     private IEnumerator Cooldown()
