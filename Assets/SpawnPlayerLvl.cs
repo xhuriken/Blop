@@ -10,15 +10,11 @@ public class SpawnPlayerLvl : MonoBehaviour
     void Start()
     {
         playerInputManager = FindObjectOfType<PlayerInputManager>();
-
         if (playerInputManager == null)
         {
-            Debug.LogWarning("No PlayerInputManager found, creating a new one.");
-
             GameObject newPIM = new GameObject("PlayerInputManager");
             playerInputManager = newPIM.AddComponent<PlayerInputManager>();
         }
-
         for (int i = 0; i < 2; i++)
         {
             InputDevice savedDevice = PlayerPersistence.Instance.GetSavedDevice(i);
@@ -30,5 +26,4 @@ public class SpawnPlayerLvl : MonoBehaviour
             }
         }
     }
-
 }
