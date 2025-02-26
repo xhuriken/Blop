@@ -3,22 +3,21 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.InputSystem.Utilities;
 using Febucci.UI;
+using System;
 
-public class CustomPlayerManager : MonoBehaviour
+public class PlayerInputSpawner: MonoBehaviour
 {
     public GameObject player1Prefab; 
     public GameObject player2Prefab; 
     public Transform spawnPoint1;    
     public Transform spawnPoint2;    
-    public GameObject joinText;
-    TypewriterByCharacter joinType;
+    public TypewriterByCharacter joinType;
     private bool player1Joined = false;
     private bool player2Joined = false;
     private List<InputDevice> usedDevices = new List<InputDevice>();
 
     private void Awake()
     {
-        joinType = joinText.GetComponent<TypewriterByCharacter>();
         joinType.ShowText("Press Any Key ...");
     }
 
@@ -45,10 +44,9 @@ public class CustomPlayerManager : MonoBehaviour
             player2Joined = true;
         }
 
-        if (player1Joined && player2Joined && joinText != null)
+        if (player1Joined && player2Joined && joinType != null)
         {
-        joinType.ShowText("");
-
+            joinType.ShowText("");
         }
     }
 
