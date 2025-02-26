@@ -18,10 +18,12 @@ public class WinZone : MonoBehaviour
         if (collision.CompareTag("BlueBlop"))
         {
             playerBlueInside = true;
+            Destroy(collision.gameObject);
         }
         else if (collision.CompareTag("RedBlop"))
         {
             playerRedInside = true;
+            Destroy(collision.gameObject);
         }
 
         if (playerBlueInside && playerRedInside)

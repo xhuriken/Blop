@@ -27,7 +27,7 @@ public class Transition : MonoBehaviour
 
         transform.localScale = maxScale; 
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(TransitionShrink());
     }
 
@@ -44,9 +44,6 @@ public class Transition : MonoBehaviour
         }
 
         transform.localScale = minScale;
-
-        yield return new WaitForSeconds(1f); 
-
         Destroy(this.gameObject);
     }
 }
