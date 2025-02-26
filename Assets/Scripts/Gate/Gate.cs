@@ -2,10 +2,7 @@ using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-
-
-
-    // Les particules associées à la porte (à assigner via l'Inspector)
+    // Les particules associées à la porte
     public ParticleSystem redParticles;
     public ParticleSystem blueParticles;
     
@@ -28,10 +25,13 @@ public class Gate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Si le tag du Blop ne correspond pas au tag requis, le passage est bloqué
-        if (!other.CompareTag(requiredTag))
+       if (other.CompareTag(tagOne) || other.CompareTag(tagTwo))
         {
-            KillPlayer(other.gameObject);
+            // Si le tag ne correspond pas au tag requis, le joueur est tué
+            if (!other.CompareTag(requiredTag))
+            {
+                KillPlayer(other.gameObject);  // Tu peux ici spécifier plus précisément le type de joueur que tu veux "tuer"
+            }
         }
     }
 
