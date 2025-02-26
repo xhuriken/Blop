@@ -1,10 +1,13 @@
 ﻿using DG.Tweening;
+using Febucci.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.U2D;
 
 public class Player : MonoBehaviour
 {
@@ -12,7 +15,7 @@ public class Player : MonoBehaviour
     private Dictionary<SpringJoint2D, float> springDistance = new Dictionary<SpringJoint2D, float>();
 
     private Rigidbody2D m_rb;
-
+    private PlayerInput playerInput;
     public ParticleSystem deathParticles;
     public GameObject transition;
     public float maxSpeed = 3f;
@@ -31,11 +34,18 @@ public class Player : MonoBehaviour
     private bool isMoving = false;
     private bool isGrowing = false;
     private bool isDead = false;
+    private Animator anim;
+    public AnimatorController animRed;
+    public SpriteShapeRenderer spriteRender;
 
     private int groundedPointsCount = 0;
 
     void Start()
     {
+        AdjustSpringJointsShrink(shrinkFactor);
+        playerInput = GetComponent<PlayerInput>();
+        anim = GetComponent<Animator>();
+        CheckPlayerID();
         DontDestroyOnLoad(this.gameObject);
         m_rb = GetComponent<Rigidbody2D>();
 
@@ -58,6 +68,34 @@ public class Player : MonoBehaviour
             SpringJoint2D joint = segment.Key;
             float originalDistance = segment.Value;
             joint.distance = originalDistance * shrinkFactor;
+        }
+    }
+    private void CheckPlayerID()
+    {
+        GameObject[] blueBlops = GameObject.FindGameObjectsWithTag("BlueBlop");
+
+        if (blueBlops.Length > 1) 
+        {
+            gameObject.tag = "RedBlop";
+            Debug.Log($"Player {playerInput.playerIndex} changed to RedBlop");
+
+            anim.runtimeAnimatorController = animRed;
+            spriteRender.color = new Color32(217, 66, 92, 255);
+            this.gameObject.layer = 9;
+
+            foreach (Transform child in transform)
+            {
+                Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.gameObject.layer = 9;
+                }
+
+                foreach (SpringJoint2D joint in child.GetComponents<SpringJoint2D>())
+                {
+                    springDistance[joint] = joint.distance;
+                }
+            }
         }
     }
 

@@ -5798,6 +5798,7 @@ GameObject:
   - component: {fileID: 1054205678643502222}
   - component: {fileID: 2594567693016849406}
   - component: {fileID: 8290895886457816482}
+  - component: {fileID: 1022717858167772070}
   - component: {fileID: 2069289370894735739}
   - component: {fileID: 3118277144334804373}
   - component: {fileID: 4314988386894432981}
@@ -5930,6 +5931,27 @@ MonoBehaviour:
   shrinkEase: 17
   growTime: 0.25
   shrinkTime: 0.1
+--- !u!95 &1022717858167772070
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339333907776107978}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 973bf4789c8fe9640800be089ab5434e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &2069289370894735739
 MonoBehaviour:
   m_ObjectHideFlags: 0
