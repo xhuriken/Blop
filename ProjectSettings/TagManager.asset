@@ -6,17 +6,19 @@ TagManager:
   tags:
   - BlueBlop
   - RedBlop
+  - Ground
+  - lvlManager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - PlayerPoint
+  - 
   - Water
   - UI
   - Player
   - Ground
-  - 
-  - 
+  - BluePoint
+  - RedPoint
   - 
   - 
   - 
