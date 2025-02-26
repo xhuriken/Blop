@@ -1,27 +1,68 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Gate : MonoBehaviour
 {
-    public string requiredTag = "RedBlop"; // Le tag requis initial
+    // Les particules associées à la porte
+    public ParticleSystem redParticles;
+    public ParticleSystem blueParticles;
+    
+    // Les tags autorisés
+    public string tagOne = "RedBlop";
+    public string tagTwo = "BlueBlop";
 
-    public void SetRequiredTag(string newTag)
+    // Tag requis actuellement (modifiable)
+    public string requiredTag;
+
+    private Renderer gateRenderer;
+
+    private void Start()
     {
-        requiredTag = newTag;
-        Debug.Log("Nouveau tag requis pour passer la Gate: " + requiredTag);
+        gateRenderer = GetComponent<Renderer>();
+
+        // Initialise la Gate avec la couleur correspondant au tag autorisé
+        SetGateTag(requiredTag);
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag(requiredTag))
+       if (other.CompareTag(tagOne) || other.CompareTag(tagTwo))
         {
-            KillPlayer(other.gameObject);
+            // Si le tag ne correspond pas au tag requis, le joueur est tué
+            if (!other.CompareTag(requiredTag))
+            {
+                KillPlayer(other.gameObject);  // Tu peux ici spécifier plus précisément le type de joueur que tu veux "tuer"
+            }
         }
     }
 
     private void KillPlayer(GameObject player)
     {
         Debug.Log("Le joueur est tué.");
+    }
+
+    // Méthode pour alterner le tag et la couleur
+    public void ToggleGateTag()
+    {
+        // Alterne entre les deux tags
+        requiredTag = (requiredTag == tagOne) ? tagTwo : tagOne;
+
+        // Met à jour la couleur en fonction du tag
+        SetGateTag(requiredTag);
+    }
+
+    private void SetGateTag(string tag)
+    {
+        // Change la couleur de la Gate en fonction du tag
+        if (tag == tagOne)
+        {
+            redParticles.Play();
+            blueParticles.Stop();
+        }
+        else if (tag == tagTwo)
+        {
+
+            blueParticles.Play();
+            redParticles.Stop();
+        }
     }
 }
