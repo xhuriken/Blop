@@ -768,7 +768,7 @@ Transform:
   m_GameObject: {fileID: 420528074}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.36, y: 2.78, z: -0.021324283}
+  m_LocalPosition: {x: 4.59, y: 3.29, z: -0.021324283}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1780,7 +1780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint1: {fileID: 420528074}
   spawnPoint2: {fileID: 1496330888}
-  Blop: {fileID: 2339333907776107978, guid: 2f352f28cc4111c42a8c97870d91e878, type: 3}
 --- !u!1 &1145531104
 GameObject:
   m_ObjectHideFlags: 0
@@ -6775,7 +6774,7 @@ Transform:
   m_GameObject: {fileID: 1496330888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.03, y: 2.59, z: -0.021324283}
+  m_LocalPosition: {x: 4.77, y: -0.78, z: -0.021324283}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

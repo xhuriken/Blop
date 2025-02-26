@@ -1,17 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SpawnPlayerLvl : MonoBehaviour
-{ 
-    public GameObject spawnPoint1;
-    public GameObject spawnPoint2;
-    public GameObject Blop;
+{
+    public Transform spawnPoint1;
+    public Transform spawnPoint2;
+    private PlayerInputManager playerInputManager;
+
     void Start()
     {
-        //GameObject.FindGameObjectWithTag("BlueBlop").transform.position = spawnPoint1.transform.position;
-        //GameObject.FindGameObjectWithTag("RedBlop").transform.position = spawnPoint2.transform.position;
-        Instantiate(Blop, spawnPoint1.transform.position, Quaternion.identity);
-        Instantiate(Blop, spawnPoint2.transform.position, Quaternion.identity);
+        playerInputManager = FindObjectOfType<PlayerInputManager>();
+
+        if (playerInputManager == null)
+        {
+            Debug.LogWarning("No PlayerInputManager found, creating a new one.");
+
+            GameObject newPIM = new GameObject("PlayerInputManager");
+            playerInputManager = newPIM.AddComponent<PlayerInputManager>();
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            InputDevice savedDevice = PlayerPersistence.Instance.GetSavedDevice(i);
+            if (savedDevice != null)
+            {
+                PlayerInput newPlayer = playerInputManager.JoinPlayer(i, -1, null, savedDevice);
+                Transform spawnPoint = (i == 0) ? spawnPoint1 : spawnPoint2;
+                newPlayer.transform.position = spawnPoint.position;
+            }
+        }
     }
+
 }

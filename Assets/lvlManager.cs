@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class lvlManager : MonoBehaviour
@@ -19,6 +20,12 @@ public class lvlManager : MonoBehaviour
         if (currentLevelIndex + 1 < levelScenes.Count) 
         {
             currentLevelIndex++;
+            foreach (var player in FindObjectsOfType<PlayerInput>())
+            {
+                PlayerPersistence.Instance.SavePlayerDevice(player);
+                Debug.Log("Saved player device");
+                Destroy(player.gameObject);
+            }
             SceneManager.LoadScene(levelScenes[currentLevelIndex]); 
         }
         else

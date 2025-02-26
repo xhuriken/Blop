@@ -7,6 +7,8 @@ using System;
 
 public class PlayerInputSpawner: MonoBehaviour
 {
+    //un used actually
+
     public GameObject player1Prefab; 
     public GameObject player2Prefab; 
     public Transform spawnPoint1;    
