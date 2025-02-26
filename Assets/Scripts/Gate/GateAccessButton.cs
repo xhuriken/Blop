@@ -3,12 +3,22 @@ using UnityEngine;
 
 public class GateAccessButton : MonoBehaviour
 {
+
+    public Color redColor = Color.red;
+    public Color blueColor = Color.blue;
     public Gate gate;
+    public Renderer buttonRenderer;
+
     public float cooldownTime = 3f;
     public KeyCode activationKey = KeyCode.E;
 
     private bool isCooldown = false;
     private Collider2D playerInRange;
+
+    private void Start()
+    {
+        UpdateButtonColor();
+    }
 
     private void Update()
     {
@@ -40,7 +50,21 @@ public class GateAccessButton : MonoBehaviour
     {
         // Change le tag autorisé et la couleur de la Gate
         gate.ToggleGateTag();
+        UpdateButtonColor();
+
         StartCoroutine(Cooldown());
+    }
+
+    private void UpdateButtonColor()
+    {
+        if (gate.requiredTag == gate.tagOne)
+        {
+            buttonRenderer.material.color = redColor;
+        }
+        else
+        {
+            buttonRenderer.material.color = blueColor;
+        }
     }
 
     private IEnumerator Cooldown()
