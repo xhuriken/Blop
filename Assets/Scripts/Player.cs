@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -12,13 +14,17 @@ public class Player : MonoBehaviour
     private Rigidbody2D m_rb;
 
     public ParticleSystem deathParticles;
+    public GameObject transition;
     public float maxSpeed = 3f;
     public float acceleration = 5.0f;
     public float deceleration = 15.0f;
     public float envDeceleration = 15.0f;
     public float growthFactor = 1.2f;
     public float shrinkFactor = 0.8f;
-
+    public Ease growEase = Ease.InElastic;
+    public Ease shrinkEase = Ease.OutExpo;
+    public float growTime = 0.1f;
+    public float shrinkTime = 0.1f;
     private float newEyesVelocityX = 0f;
     private float targetVelocity = 0f;
     private float currentVelocity = 0f;
@@ -91,7 +97,7 @@ public class Player : MonoBehaviour
             newEyesVelocityX = Mathf.Lerp(newEyesVelocityX, 0, envDeceleration * Time.deltaTime);
         }
 
-        newEyesVelocityX = Mathf.Clamp(newEyesVelocityX, -4, 4);
+        newEyesVelocityX = Mathf.Clamp(newEyesVelocityX, -6, 6);
 
 
         if (isGrowing && groundedPointsCount >= 8)
@@ -115,24 +121,41 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             isGrowing = true;
-            AdjustSpringJoints(growthFactor);
+            AdjustSpringJointsGrow(growthFactor);
         }
         else if (context.canceled)
         {
             isGrowing = false;
-            AdjustSpringJoints(shrinkFactor);
+            AdjustSpringJointsShrink(shrinkFactor);
         }
     }
 
-    private void AdjustSpringJoints(float factor)
+    private void AdjustSpringJointsGrow(float factor)
     {
         foreach (var segment in springDistance)
         {
             SpringJoint2D joint = segment.Key;
             float originalDistance = segment.Value;
-            joint.distance = originalDistance * factor;
+            float targetDistance = originalDistance * factor;
+            joint.DOKill();
+            DOTween.To(() => joint.distance, x => joint.distance = x, targetDistance, growTime)
+               .SetEase(growEase).SetTarget(joint);
+            //joint.distance = originalDistance * factor;
         }
     }
+    private void AdjustSpringJointsShrink(float factor)
+    {
+        foreach (var segment in springDistance)
+        {
+            SpringJoint2D joint = segment.Key;
+            float originalDistance = segment.Value;
+            float targetDistance = originalDistance * factor;
+            joint.DOKill();
+            DOTween.To(() => joint.distance, x => joint.distance = x, targetDistance, shrinkTime)
+               .SetEase(shrinkEase).SetTarget(joint);
+            //joint.distance = originalDistance * factor;
+        }
+    }   
 
     public void NotifyPointGrounded()
     {
@@ -148,15 +171,43 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-
-        Instantiate(deathParticles, transform.position, Quaternion.identity);
+        if(isDead)
+        {
+            return;
+        }
+        deathParticles.Play();
+        StartCoroutine(Dispawn());
         isDead = true;
         
     }
 
-    public IEnumerator Restart()
+    public IEnumerator Dispawn()
     {
-        yield return new WaitForSeconds(1.5f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        float duration = 0.2f; 
+        float elapsedTime = 0f;
+        Vector3 initialScale = transform.localScale;
+        Vector3 targetScale = Vector3.zero; 
+
+        while (elapsedTime < duration)
+        {
+            transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = targetScale;
+        StartCoroutine(Respawn());
+    }
+
+    public IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(1.3f);
+        Instantiate(transition, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(2f);
+        transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
+        isDead = false;
     }
 }
+
