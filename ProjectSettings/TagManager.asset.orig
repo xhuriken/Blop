@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+<<<<<<< HEAD
+  - button
+=======
+  - BlueBlop
+  - RedBlop
+  - Ground
+  - lvlManager
+>>>>>>> players
   layers:
   - Default
   - TransparentFX
@@ -11,10 +19,16 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
+<<<<<<< HEAD
+  - Button
   - 
   - 
-  - 
-  - 
+=======
+  - Ground
+  - BluePoint
+  - RedPoint
+>>>>>>> players
   - 
   - 
   - 

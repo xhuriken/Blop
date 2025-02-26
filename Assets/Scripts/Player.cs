@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D m_rb;
 
+
     public ParticleSystem deathParticles;
     public float maxSpeed = 3f;
     public float acceleration = 5.0f;
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
     private float targetVelocity = 0f;
     private float currentVelocity = 0f;
     private bool isMoving = false;
-    private bool isGrowing = false;
+    public bool isGrowing = false;
     private bool isDead = false;
 
     private int groundedPointsCount = 0;
@@ -71,6 +72,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log(this.gameObject.GetComponent<Rigidbody2D>().velocity);
         if (isDead)
         {
             m_rb.velocity = Vector2.zero;
