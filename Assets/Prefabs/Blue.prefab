@@ -1076,7 +1076,7 @@ MonoBehaviour:
   acceleration: 5
   deceleration: 50
   envDeceleration: 50
-  growthFactor: 1.6
+  growthFactor: 1.55
   shrinkFactor: 0.8
   growEase: 24
   shrinkEase: 17
