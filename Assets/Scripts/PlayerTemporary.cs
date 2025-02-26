@@ -2,42 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerTemporary : MonoBehaviour
 {
-    public float speed = 5f;
-    public float jumpForce = 7f;
-    private Rigidbody rb;
-    private bool isGrounded;
-    public LayerMask groundLayer;
-
+    public float speed = 5f; // Vitesse du joueur
+    public float jumpForce = 7f; // Force du saut
+    private Rigidbody2D rb; // Référence au Rigidbody2D du joueur
+    public LayerMask groundLayer; // Masque de couche pour le sol
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>(); // Récupère le Rigidbody2D au démarrage
     }
 
     void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical) * speed * Time.deltaTime;
-        transform.Translate(movement);
 
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow))
+        // Récupère l'input horizontal (A/D ou flèches gauche/droite)
+        float moveInput = Input.GetAxis("Horizontal");
+
+        // Applique la vitesse au Rigidbody2D
+        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+
+        // Détecte le saut avec l'input "Jump" (Espace par défaut)
+        if (Input.GetButtonDown("Jump"))
         {
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            Jump();
         }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            transform.Translate(Vector3.back * speed * Time.deltaTime);
-        }
-        if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            transform.Translate(Vector3.left * speed * Time.deltaTime);
-        }
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
-        }
+    }
+
+    // Méthode de saut
+    private void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
 }
