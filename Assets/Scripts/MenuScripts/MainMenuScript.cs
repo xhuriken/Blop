@@ -8,12 +8,18 @@ public class MainMenuScript : MonoBehaviour
     public CanvasGroup MainPanel;
     public CanvasGroup OptionsPanel;
     public CanvasGroup CreditsPanel;
+    public GameObject Transition;
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Instantiate(Transition, new Vector3(0,0,0), Quaternion.identity);
+        StartCoroutine(ChargeFirstLvl());
     }
 
+    private IEnumerator ChargeFirstLvl(){
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
     public void Option()
     {
         OptionsPanel.alpha = 1;
