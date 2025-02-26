@@ -25,9 +25,9 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         _initialTextScale = Text.fontSize;
         _initialRotation = Text.rectTransform.eulerAngles;
 
-        //textAnimator = Text.GetComponent<TextAnimator>();
+        //_textAnimator = Text.GetComponent<TextAnimator>();
 
-        //if (textAnimator == null)
+        //if (_textAnimator == null)
         //{
         //    Debug.LogWarning("TextAnimator error : doesn't exist");
         //}
