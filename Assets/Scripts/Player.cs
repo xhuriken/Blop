@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     private Animator anim;
     public AnimatorController animRed;
     public SpriteShapeRenderer spriteRender;
+    private bool isInAir = false;
     //private CinemachineVirtualCamera Room1Vcam;
 
     private int groundedPointsCount = 0;
@@ -92,6 +93,7 @@ public class Player : MonoBehaviour
                 if (rb != null)
                 {
                     rb.gameObject.layer = 9;
+                    rb.gameObject.GetComponent<SpriteRenderer>().color = new Color32(217, 66, 92, 255);
                 }
 
                 foreach (SpringJoint2D joint in child.GetComponents<SpringJoint2D>())
@@ -155,6 +157,18 @@ public class Player : MonoBehaviour
         {
             m_rb.velocity = new Vector2(newEyesVelocityX, m_rb.velocity.y);
         }
+
+        if(groundedPointsCount == 0)
+        {
+            isInAir = true;
+        }
+        if(groundedPointsCount > 0 && isInAir == true && (m_rb.velocity.y > 4f || m_rb.velocity.y < -4f || m_rb.velocity.x > 4f || m_rb.velocity.x < -4f))
+        {
+            anim.SetTrigger("Tuch");
+            isInAir = false;
+        }
+
+        anim.SetBool("isDead", isDead);
     }   
 
     public void GrowUp(InputAction.CallbackContext context)
@@ -162,12 +176,16 @@ public class Player : MonoBehaviour
         if (context.performed)
         {
             isGrowing = true;
+            anim.SetBool("isGrowing", isGrowing);
             AdjustSpringJointsGrow(growthFactor);
+            Gamepad.current?.SetMotorSpeeds(0.3f, 0.3f);
         }
         else if (context.canceled)
         {
             isGrowing = false;
+            anim.SetBool("isGrowing", isGrowing);
             AdjustSpringJointsShrink(shrinkFactor);
+            Gamepad.current?.SetMotorSpeeds(0.0f, 0.0f);
         }
     }
 

@@ -12558,7 +12558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomID: 1
   spawnPoint1: {x: 38.82, y: 6.56, z: 0}
-  spawnPoint2: {x: 38.82, y: 6.56, z: 0}
+  spawnPoint2: {x: 31.4, y: 6.56, z: 0}
   vcam: {fileID: 119923606}
 --- !u!1 &1427320083
 GameObject:
@@ -12605,6 +12605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rooms: []
+  isPlayerDead: 0
 --- !u!1 &1496330888
 GameObject:
   m_ObjectHideFlags: 0
