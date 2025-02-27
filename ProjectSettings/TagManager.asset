@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - lvlManager
   - NewLevel
+  - Room1
   layers:
   - Default
   - TransparentFX

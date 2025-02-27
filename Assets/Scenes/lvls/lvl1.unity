@@ -13214,6 +13214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room1
       objectReference: {fileID: 0}
+    - target: {fileID: 311802990735570158, guid: 058d59fe2d7e3c14d9531e0e65baefd4, type: 3}
+      propertyPath: m_TagString
+      value: Room1
+      objectReference: {fileID: 0}
     - target: {fileID: 1960819040353560192, guid: 058d59fe2d7e3c14d9531e0e65baefd4, type: 3}
       propertyPath: barrier
       value: 
