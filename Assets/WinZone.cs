@@ -25,9 +25,11 @@ public class WinZone : MonoBehaviour
             GameManager.Instance.rooms[currentRoom - 1].transform.GetChild(0).gameObject.SetActive(false); //working
             GameManager.Instance.rooms[currentRoom].transform.GetChild(0).gameObject.SetActive(true);
 
-            RoomData roomData = GameManager.Instance.rooms[currentRoom].GetComponent<RoomData>();
-            Room _room = new Room(roomData.spawnPoint1, roomData.spawnPoint2, roomData.vcam,roomData.roomID);
+            RoomData roomData = GameManager.Instance.rooms[currentRoom].GetComponent<RoomData>();//
+            Room _room = new Room(roomData.spawnPoint1, roomData.spawnPoint2, roomData.vcam, roomData.roomID);
             GameManager.Instance.currentRoom = _room;
+            Debug.Log("||" + _room
+                .spawnPoint1 + " | " + _room.spawnPoint2 + " | " + _room.roomID);
         }
     }
 

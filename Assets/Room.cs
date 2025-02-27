@@ -11,7 +11,7 @@ public class Room
     public Room(Vector3 spawnPoint1, Vector3 spawnPoint2, GameObject vcam,int roomID)
     {
         this.spawnPoint1 = spawnPoint1;
-        this.spawnPoint1 = spawnPoint2;
+        this.spawnPoint2 = spawnPoint2;
         this.vcam = vcam;
         this.roomID = roomID;
     }

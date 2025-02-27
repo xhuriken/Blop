@@ -27,22 +27,30 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        ReloadRooms();
+    }
+
+    public void ReloadRooms()
+    {
         rooms = GameObject.FindGameObjectsWithTag("Room");
 
         rooms = rooms.OrderBy(room => room.name).ToArray();
 
         foreach (GameObject room in rooms)
         {
-            if(room.GetComponent<RoomData>().roomID != 0)
+            if (room.GetComponent<RoomData>().roomID != 0)
             {
                 room.transform.GetChild(0).gameObject.SetActive(false);
+                Debug.Log("Room " + room.GetComponent<RoomData>().roomID + " is inactive");
             }
         }
     }
-
-    public void reload()
+    public IEnumerator reload()
     {
         SceneManager.LoadScene("lvl1");
+        yield return new WaitForSeconds(0.2f);
+        ReloadRooms();
+        Debug.Log(currentRoom.spawnPoint1 + " | " + currentRoom.spawnPoint2 + " | " + currentRoom.roomID);
         rooms[0].transform.GetChild(0).gameObject.SetActive(false);
         rooms[currentRoom.roomID].transform.GetChild(0).gameObject.SetActive(true);
 

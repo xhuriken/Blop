@@ -45,7 +45,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
-        //Room1Vcam = GameObject.FindGameObjectWithTag("Room1").transform.GetChild(0).GetComponent<CinemachineVirtualCamera>();
         AdjustSpringJointsShrink(shrinkFactor);
         playerInput = GetComponent<PlayerInput>();
         anim = GetComponent<Animator>();
@@ -58,7 +57,6 @@ public class Player : MonoBehaviour
             if (rb != null)
             {
                 points.Add(rb);
-                rb.gameObject.tag = gameObject.tag;
                 
             }
 
@@ -267,11 +265,17 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1f);
         RespawnPlayer();
         //transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-        if(gameObject.tag == "BlueBlop") spriteRender.color = new Color32(217, 66, 92, 255);
-        if(gameObject.tag == "RedBlop") spriteRender.color = new Color32(65, 207, 207, 255);
+        if (gameObject.tag == "BlueBlop")
+        {
+            spriteRender.color = new Color32(65, 207, 207, 255);
+        }
+        if (gameObject.tag == "RedBlop")
+        {
+            spriteRender.color = new Color32(217, 66, 92, 255);
+        }
         //spriteRender.color = new Color32(255, 255, 255, 0);
         //string currentSceneName = SceneManager.GetActiveScene().name;
-        GameManager.Instance.reload();
+        StartCoroutine(GameManager.Instance.reload());
         WaitForSeconds wait = new WaitForSeconds(0.1f);
         Debug.Log("___RealoadMade");
     }
