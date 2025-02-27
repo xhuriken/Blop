@@ -1,54 +1,85 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GateAccessButton : MonoBehaviour
 {
-    public GameObject gate; // Assignez l'objet Gate dans l'Inspector
-    public string tagOne = "RedBlop"; // Premier tag requis
-    public string tagTwo = "BlueBlop"; // Deuxième tag requis
-    public float cooldownTime = 2f; // Temps de cooldown en secondes
-    private bool useTagOne = true; // Indique quel tag utiliser
-    private bool isCooldown = false; // Indique si le bouton est en cooldown
-    private Gate gateScript;
+    public Color redColor = Color.red;
+    public Color blueColor = Color.blue;
+    public Gate gate;
+    public Renderer buttonRenderer;
+    public float cooldownTime = 3f;
+    public float pressDepth = 0.2f;
+    public float pressSpeed = 0.1f; 
 
-    void Start()
+    private bool isCooldown = false;
+    private Vector3 initialPosition;
+    private Coroutine pressCoroutine;
+
+    private void Start()
     {
-        if (gate != null)
-        {
-            gateScript = gate.GetComponent<Gate>();
-        }
+        initialPosition = transform.position;
+        UpdateButtonColor();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("RedBlop"))
+        if (!isCooldown && (collision.gameObject.CompareTag("RedBlop") || collision.gameObject.CompareTag("BlueBlop")))
         {
-            if (gateScript != null)
-            {
-                if (useTagOne)
-                {
-                    gateScript.SetRequiredTag(tagOne);
-                    Debug.Log("Tag requis pour la Gate changé en: " + tagOne);
-                }
-                else
-                {
-                    gateScript.SetRequiredTag(tagTwo);
-                    Debug.Log("Tag requis pour la Gate changé en: " + tagTwo);
-                }
+            Rigidbody2D rb = collision.rigidbody;
 
-                // Alterne le tag requis pour la prochaine fois
-                useTagOne = !useTagOne;
-                
-                StartCoroutine(Cooldown());
+            // Vérifie si le joueur descend avant l'impact
+            if (rb.velocity.y < 0 && collision.contacts[0].point.y > transform.position.y)
+            {
+                if (pressCoroutine == null)
+                {
+                    pressCoroutine = StartCoroutine(PressButton());
+                }
             }
         }
     }
 
-    private IEnumerator Cooldown()
+    private IEnumerator PressButton()
     {
         isCooldown = true;
+        Vector3 pressedPosition = initialPosition - new Vector3(0, pressDepth, 0);
+
+        // Descente du bouton
+        float elapsedTime = 0;
+        while (elapsedTime < pressSpeed)
+        {
+            transform.position = Vector3.Lerp(initialPosition, pressedPosition, elapsedTime / pressSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = pressedPosition;
+
+        ActivateButton();
+
+        // Attente de la fin du cooldown
         yield return new WaitForSeconds(cooldownTime);
+
+        // Remontée du bouton
+        elapsedTime = 0;
+        while (elapsedTime < pressSpeed)
+        {
+            transform.position = Vector3.Lerp(pressedPosition, initialPosition, elapsedTime / pressSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = initialPosition;
+
         isCooldown = false;
+        pressCoroutine = null;
+    }
+
+    private void ActivateButton()
+    {
+        gate.ToggleGateTag();
+        UpdateButtonColor();
+    }
+
+    private void UpdateButtonColor()
+    {
+        buttonRenderer.material.color = (gate.requiredTag == gate.tagOne) ? redColor : blueColor;
     }
 }

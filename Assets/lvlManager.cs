@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class lvlManager : MonoBehaviour
 {
     public List<string> levelScenes;
     private int currentLevelIndex = 0;
-
 
     private void Start()
     {
@@ -16,10 +16,14 @@ public class lvlManager : MonoBehaviour
 
     public void NextLevel()
     {
-        if (currentLevelIndex + 1 < levelScenes.Count) 
+        if (currentLevelIndex + 1 < levelScenes.Count)
         {
             currentLevelIndex++;
-            SceneManager.LoadScene(levelScenes[currentLevelIndex]); 
+            foreach (var player in FindObjectsOfType<PlayerInput>())
+            {
+                Destroy(player.gameObject);
+            }
+            SceneManager.LoadScene(levelScenes[currentLevelIndex]);
         }
         else
         {
