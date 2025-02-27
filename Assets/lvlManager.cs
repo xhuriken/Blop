@@ -21,7 +21,6 @@ public class lvlManager : MonoBehaviour
             currentLevelIndex++;
             foreach (var player in FindObjectsOfType<PlayerInput>())
             {
-                PlayerPersistence.Instance.SavePlayerDevice(player);
                 Destroy(player.gameObject);
             }
             SceneManager.LoadScene(levelScenes[currentLevelIndex]);

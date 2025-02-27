@@ -5,13 +5,9 @@ using UnityEngine;
 public class WinZone : MonoBehaviour
 {
     private lvlManager lvlManager;
-    private bool playerBlueInside = false;
-    private bool playerRedInside = false;
+    public bool playerBlueInside = false;
+    public bool playerRedInside = false;
 
-    public void Start()
-    {
-        lvlManager = GameObject.FindGameObjectWithTag("lvlManager").GetComponent<lvlManager>();
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,11 +18,6 @@ public class WinZone : MonoBehaviour
         else if (collision.CompareTag("RedBlop"))
         {
             playerRedInside = true;
-        }
-
-        if (playerBlueInside && playerRedInside)
-        {
-            lvlManager.NextLevel();
         }
     }
 

@@ -8,6 +8,7 @@ TagManager:
   - RedBlop
   - Ground
   - lvlManager
+  - NewLevel
   layers:
   - Default
   - TransparentFX
@@ -59,6 +60,7 @@ TagManager:
     locked: 0
   - name: Arround
     uniqueID: 6165873
+    locked: 0
   - name: Background
     uniqueID: 463552163
     locked: 0

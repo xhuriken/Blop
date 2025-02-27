@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Danger : MonoBehaviour
 {
+    public Vector2 direction;
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.transform.parent.GetComponent<Player>() != null)
         {
-            collision.gameObject.transform.parent.GetComponent<Player>().Die();
+            if(collision.gameObject.transform.parent.GetComponent<Player>().isDead == false)
+            {
+                Debug.Log("___Player Tuch");
+                collision.gameObject.transform.parent.GetComponent<Player>().Die();
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(direction, ForceMode2D.Impulse);
+            }
         }
     }
 }
