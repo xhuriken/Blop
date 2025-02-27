@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8552073214571363210}
   - component: {fileID: 440215540256810074}
-  - component: {fileID: 1960819040353560192}
   m_Layer: 2
   m_Name: Room1
   m_TagString: Untagged
@@ -84,22 +83,6 @@ PolygonCollider2D:
       - {x: 8.574416, y: -0.66639876}
       - {x: 8.509832, y: 1.5212736}
   m_UseDelaunayMesh: 0
---- !u!114 &1960819040353560192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 311802990735570158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 080a45d5e8185b74e91ae015e114a59f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  winZone: {fileID: 0}
-  barrier: {fileID: 0}
-  currentVCam: {fileID: 7614191267315189936}
-  newVCam: {fileID: 0}
 --- !u!1 &1763006962707213789
 GameObject:
   m_ObjectHideFlags: 0

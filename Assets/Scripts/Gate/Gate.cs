@@ -25,19 +25,14 @@ public class Gate : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-       if (other.CompareTag(tagOne) || other.CompareTag(tagTwo))
+       if (other.gameObject.transform.parent.CompareTag(tagOne) || other.gameObject.transform.parent.CompareTag(tagTwo))
         {
             // Si le tag ne correspond pas au tag requis, le joueur est tué
-            if (!other.CompareTag(requiredTag))
+            if (!other.gameObject.transform.parent.CompareTag(requiredTag))
             {
-                KillPlayer(other.gameObject);  // Tu peux ici spécifier plus précisément le type de joueur que tu veux "tuer"
+                other.gameObject.transform.parent.GetComponent<Player>().Die();  // nique ta mère avec gpt
             }
         }
-    }
-
-    private void KillPlayer(GameObject player)
-    {
-        Debug.Log("Le joueur est tué.");
     }
 
     // Méthode pour alterner le tag et la couleur

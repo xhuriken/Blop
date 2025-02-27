@@ -38,19 +38,19 @@ public class Player : MonoBehaviour
     private Animator anim;
     public AnimatorController animRed;
     public SpriteShapeRenderer spriteRender;
-    private CinemachineVirtualCamera Room1Vcam;
+    //private CinemachineVirtualCamera Room1Vcam;
 
     private int groundedPointsCount = 0;
 
     void Start()
     {
-        Room1Vcam = GameObject.FindGameObjectWithTag("Room1").transform.GetChild(0).GetComponent<CinemachineVirtualCamera>();
+        m_rb = GetComponent<Rigidbody2D>();
+        //Room1Vcam = GameObject.FindGameObjectWithTag("Room1").transform.GetChild(0).GetComponent<CinemachineVirtualCamera>();
         AdjustSpringJointsShrink(shrinkFactor);
         playerInput = GetComponent<PlayerInput>();
         anim = GetComponent<Animator>();
         CheckPlayerID();
         DontDestroyOnLoad(this.gameObject);
-        m_rb = GetComponent<Rigidbody2D>();
 
         foreach (Transform child in transform)
         {
@@ -58,6 +58,8 @@ public class Player : MonoBehaviour
             if (rb != null)
             {
                 points.Add(rb);
+                rb.gameObject.tag = gameObject.tag;
+                
             }
 
             foreach (SpringJoint2D joint in child.GetComponents<SpringJoint2D>())
@@ -80,11 +82,11 @@ public class Player : MonoBehaviour
         if (blueBlops.Length > 1) 
         {
             gameObject.tag = "RedBlop";
+            this.gameObject.layer = 9;
             Debug.Log($"Player {playerInput.playerIndex} changed to RedBlop");
 
             anim.runtimeAnimatorController = animRed;
             spriteRender.color = new Color32(217, 66, 92, 255);
-            this.gameObject.layer = 9;
 
             foreach (Transform child in transform)
             {
@@ -216,6 +218,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
+        GameManager.Instance.isPlayerDead = true;
         Debug.Log("___Player died In PlayerScript");
 
         deathParticles.Play();
@@ -226,19 +229,32 @@ public class Player : MonoBehaviour
 
     public IEnumerator Dispawn()
     {
-        float duration = 0.2f; 
-        float elapsedTime = 0f;
-        Vector3 initialScale = transform.localScale;
-        Vector3 targetScale = new Vector3(0.25f, 0.25f, 0.25f); 
 
-        while (elapsedTime < duration)
-        {
-            transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        //foreach (Transform child in transform)
+        //{
+        //    Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+        //    if (rb != null)
+        //    {
+        //        rb.isKinematic = true;
+        //    }
+        //}
+        anim.SetBool("isDead", true);
+        spriteRender.color = new Color32(255, 255, 255, 0);
+        yield return null;
+        
+        //float duration = 0.2f; 
+        //float elapsedTime = 0f;
+        //Vector3 initialScale = transform.localScale;
+        //Vector3 targetScale = new Vector3(0.25f, 0.25f, 0.25f); 
 
-        transform.localScale = targetScale;
+        //while (elapsedTime < duration)
+        //{
+        //    transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / duration);
+        //    elapsedTime += Time.deltaTime;
+        //    yield return null;
+        //}
+
+        //transform.localScale = targetScale;
         StartCoroutine(Respawn());
         Debug.Log("___LaunchRespawn");
 
@@ -249,41 +265,65 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         Instantiate(transition, transform.position, Quaternion.identity);
         yield return new WaitForSeconds(1f);
-        transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(currentSceneName);
-        Room1Vcam.Priority = 5;
+        RespawnPlayer();
+        //transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        if(gameObject.tag == "BlueBlop") spriteRender.color = new Color32(217, 66, 92, 255);
+        if(gameObject.tag == "RedBlop") spriteRender.color = new Color32(65, 207, 207, 255);
+        //spriteRender.color = new Color32(255, 255, 255, 0);
+        //string currentSceneName = SceneManager.GetActiveScene().name;
+        GameManager.Instance.reload();
         WaitForSeconds wait = new WaitForSeconds(0.1f);
         Debug.Log("___RealoadMade");
-        RespawnPlayer();
     }
 
     public void RespawnPlayer()
     {
-        GameObject[] newLevels = GameObject.FindGameObjectsWithTag("NewLevel");
-        GameObject activeLevel = null;
-        foreach (GameObject level in newLevels)
-        {
-            NewLevel ld = level.GetComponent<NewLevel>();
-            if (ld != null && ld.isLevel)
-            {
-                activeLevel = level;
-                Debug.Log("___" + activeLevel.name);
-                break;
-            }
-        }
-        if (activeLevel == null) return;
-        Debug.Log("__activeLevelTrouvé");
+        //GameObject[] newLevels = GameObject.FindGameObjectsWithTag("NewLevel");
+        //GameObject activeLevel = null;
+        //foreach (GameObject level in newLevels)
+        //{
+        //    NewLevel ld = level.GetComponent<NewLevel>();
+        //    if (ld != null && ld.isLevel)
+        //    {
+        //        activeLevel = level;
+        //        Debug.Log("___" + activeLevel.name);
+        //        break;
+        //    }
+        //}
+        //if (activeLevel == null) return;
+        //Debug.Log("__activeLevelTrouvé");
         //Vec spawnPoint1 = 
         //Transform spawnPoint2 = activeLeve.
+        
         GameObject bluePlayer = GameObject.FindGameObjectWithTag("BlueBlop");
         GameObject redPlayer = GameObject.FindGameObjectWithTag("RedBlop");
-        NewLevel newLevel = activeLevel.GetComponent<NewLevel>();
-        if (bluePlayer != null) bluePlayer.transform.position = newLevel.SpawnPoint1;
-        if (redPlayer != null) redPlayer.transform.position = newLevel.SpawnPoint2;
-        newLevel.vcam.Priority = 10;
+        //NewLevel newLevel = activeLevel.GetComponent<NewLevel>();
+        if (bluePlayer == null)
+        {
+            Debug.Log("___BluePlayerNotFound");
+            return;
+        }
+        if (redPlayer == null)
+        {
+            Debug.Log("___BluePlayerNotFound");
+            return;
+        }
+        bluePlayer.transform.position = GameManager.Instance.currentRoom.spawnPoint1;
+        redPlayer.transform.position = GameManager.Instance.currentRoom.spawnPoint2;
+        //foreach (Transform child in transform)
+        //{
+        //    Rigidbody2D rb = child.GetComponent<Rigidbody2D>();
+        //    if (rb != null)
+        //    {
+        //        rb.isKinematic = false;
+        //    }
+        //}
+        //GameManager.Instance.CurrentLevel.vcam.Priority = 10;
         Debug.Log("___Finish");
+        anim.SetBool("isDead", false);
         isDead = false;
+        GameManager.Instance.isPlayerDead = false;
+
     }
 
 }

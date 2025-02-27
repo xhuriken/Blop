@@ -13,6 +13,8 @@ public class GateAccessButton : MonoBehaviour
     public KeyCode activationKey = KeyCode.E;
 
     private bool isCooldown = false;
+
+    //Nan fin sah mec pourquoi ? tu fait un bool genre ?
     private Collider2D playerInRange;
 
     private void Start()
@@ -32,7 +34,7 @@ public class GateAccessButton : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Détecte si un Blop est proche
-        if (other.CompareTag("RedBlop") || other.CompareTag("BlueBlop"))
+        if (other.gameObject.transform.parent.CompareTag("RedBlop") || other.gameObject.transform.parent.CompareTag("BlueBlop"))
         {
             playerInRange = other;
         }

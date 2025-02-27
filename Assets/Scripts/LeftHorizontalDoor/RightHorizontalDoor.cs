@@ -58,7 +58,7 @@ public class RightHorizontalDoor : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("BlueBlop") || other.CompareTag("RedBlop"))
+        if (other.gameObject.transform.parent.CompareTag("BlueBlop") || other.gameObject.transform.parent.CompareTag("RedBlop"))
         {
             playerInRange = true;
         }
@@ -66,7 +66,7 @@ public class RightHorizontalDoor : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("BlueBlop") || other.CompareTag("RedBlop"))
+        if (other.gameObject.transform.parent.CompareTag("BlueBlop") || other.gameObject.transform.parent.CompareTag("RedBlop"))
         {
             playerInRange = false;
         }
