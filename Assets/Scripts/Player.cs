@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     private List<Rigidbody2D> points = new List<Rigidbody2D>(); // liste des points du blob
     private Dictionary<SpringJoint2D, float> springDistance = new Dictionary<SpringJoint2D, float>();
 
-    private Rigidbody2D m_rb;
+    [SerializeField] private Rigidbody2D m_rb;
     private PlayerInput playerInput;
     public ParticleSystem deathParticles;
     public GameObject transition;
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        Room1Vcam = GameObject.FindGameObjectWithTag("Room1").transform.GetChild(0).GetComponent<CinemachineVirtualCamera>();
+        //Room1Vcam = GameObject.FindGameObjectWithTag("Room1").transform.GetChild(0).GetComponent<CinemachineVirtualCamera>();
         AdjustSpringJointsShrink(shrinkFactor);
         playerInput = GetComponent<PlayerInput>();
         anim = GetComponent<Animator>();
