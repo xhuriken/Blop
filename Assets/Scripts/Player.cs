@@ -4,7 +4,6 @@ using Febucci.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -36,7 +35,7 @@ public class Player : MonoBehaviour
     private bool isGrowing = false;
     public bool isDead = false;
     private Animator anim;
-    public AnimatorController animRed;
+    public RuntimeAnimatorController animRed;
     public SpriteShapeRenderer spriteRender;
     private bool isInAir = false;
     //private CinemachineVirtualCamera Room1Vcam;
