@@ -4,75 +4,95 @@ using UnityEngine;
 
 public class LeftHorizontalDoor : MonoBehaviour
 {
-    public Transform door;  
+    public Transform door;
     public Transform button;
-    public float openDistance = 8f; 
+    public float openDistance = 8f;
     public float buttonPressDepth = 0.75f;
-    public float speed = 1f; 
+    public float speed = 2f;
+    public float requiredDistance = 1f;
+    public float buttonPressSpeed = 0.1f;
+    public float cooldownTime = 1f;
 
-    public float requiredDistance = 1f; 
-    private Vector2 initialDoorPosition; 
-    private Vector2 initialButtonPosition; 
-    private bool doorOpened = false; 
-    private float lerpTime = 0f; 
-    private bool playerInRange = false;
+    private Vector2 initialDoorPosition;
+    private Vector2 initialButtonPosition;
+    private bool doorOpen = false;
+    private bool buttonPressed = false;
+    private float lerpTime = 0f;
+    private Coroutine pressCoroutine;
 
     public Transform[] players;
 
     void Start()
     {
-        initialDoorPosition = door.position; 
+        initialDoorPosition = door.position;
         initialButtonPosition = button.position;
     }
 
     void Update()
     {
         CheckPlayersInRange();
-
-        if (playerInRange && !doorOpened)
-        {
-            doorOpened = true; 
-        }
-
-        if (doorOpened)
-        {
-            OpenDoor();
-            PressButton();
-        }
+        MoveDoor();
     }
 
     void CheckPlayersInRange()
     {
-        playerInRange = false; 
-
- 
         foreach (Transform player in players)
         {
-            if (Vector2.Distance(player.position, button.position) <= requiredDistance)
+            if (Vector2.Distance(player.position, button.position) <= requiredDistance && !buttonPressed)
             {
-                playerInRange = true;  
-                break; 
+                if (pressCoroutine == null)
+                {
+                    pressCoroutine = StartCoroutine(PressButton());
+                }
+                return;
             }
         }
     }
 
-    void OpenDoor()
+    IEnumerator PressButton()
     {
-        lerpTime += Time.deltaTime * speed;
+        buttonPressed = true;
+        Vector3 pressedPosition = initialButtonPosition - new Vector2(0, buttonPressDepth);
+        float elapsedTime = 0;
 
-        float targetX = initialDoorPosition.x - openDistance;
-
-        door.position = Vector2.Lerp(initialDoorPosition, new Vector2(targetX, initialDoorPosition.y), lerpTime);
-
-        if (lerpTime >= 1f)
+        while (elapsedTime < buttonPressSpeed)
         {
-            door.position = new Vector2(targetX, initialDoorPosition.y);
-            doorOpened = false;
+            button.position = Vector2.Lerp(button.position, pressedPosition, elapsedTime / buttonPressSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+        button.position = pressedPosition;
+
+        ToggleDoor();
+
+        yield return new WaitForSeconds(cooldownTime);
+
+        elapsedTime = 0;
+        while (elapsedTime < buttonPressSpeed)
+        {
+            button.position = Vector2.Lerp(button.position, initialButtonPosition, elapsedTime / buttonPressSpeed);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        button.position = initialButtonPosition;
+
+        buttonPressed = false;
+        pressCoroutine = null;
     }
 
-    void PressButton()
+    void ToggleDoor()
     {
-        button.position = Vector2.Lerp(button.position, new Vector2(initialButtonPosition.x, initialButtonPosition.y - buttonPressDepth), speed * Time.deltaTime);
+        doorOpen = !doorOpen;
+        lerpTime = 0f;
+    }
+
+    void MoveDoor()
+    {
+        if (lerpTime < 1f)
+        {
+            lerpTime += Time.deltaTime * speed;
+            float targetX = doorOpen ? initialDoorPosition.x - openDistance : initialDoorPosition.x;
+            door.position = new Vector2(Mathf.Lerp(door.position.x, targetX, lerpTime), initialDoorPosition.y);
+        }
     }
 }
