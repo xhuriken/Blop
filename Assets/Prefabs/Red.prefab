@@ -5919,18 +5919,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16200a497be458499b94dd0931f9bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_rb: {fileID: 0}
   deathParticles: {fileID: 8442435198020169576}
   transition: {fileID: 4671395837641240945, guid: 5246c1483c997084dbb93b38429ccb4f, type: 3}
   maxSpeed: 5
   acceleration: 5
   deceleration: 50
   envDeceleration: 50
-  growthFactor: 1.55
-  shrinkFactor: 0.8
+  growthFactor: 1.65
+  shrinkFactor: 0.9
   growEase: 24
   shrinkEase: 17
   growTime: 0.25
   shrinkTime: 0.1
+  isGrowing: 0
+  isDead: 0
+  animRed: {fileID: 0}
+  spriteRender: {fileID: 0}
 --- !u!95 &1022717858167772070
 Animator:
   serializedVersion: 5

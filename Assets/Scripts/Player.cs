@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     private float targetVelocity = 0f;
     private float currentVelocity = 0f;
     private bool isMoving = false;
-    private bool isGrowing = false;
+    public bool isGrowing = false;
     public bool isDead = false;
     private Animator anim;
     public AnimatorController animRed;
