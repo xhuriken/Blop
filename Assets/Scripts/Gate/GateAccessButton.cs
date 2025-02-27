@@ -3,83 +3,76 @@ using UnityEngine;
 
 public class GateAccessButton : MonoBehaviour
 {
+
     public Color redColor = Color.red;
     public Color blueColor = Color.blue;
     public Gate gate;
     public Renderer buttonRenderer;
+
     public float cooldownTime = 3f;
-    public float pressDepth = 0.2f;
-    public float pressSpeed = 0.1f; 
+    public KeyCode activationKey = KeyCode.E;
 
     private bool isCooldown = false;
-    private Vector3 initialPosition;
-    private Coroutine pressCoroutine;
+
+    //Nan fin sah mec pourquoi ? tu fait un bool genre ?
+    private Collider2D playerInRange;
 
     private void Start()
     {
-        initialPosition = transform.position;
         UpdateButtonColor();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void Update()
     {
-        if (!isCooldown && (collision.gameObject.CompareTag("RedBlop") || collision.gameObject.CompareTag("BlueBlop")))
+        // Vérifie si le joueur est proche et appuie sur le bouton
+        if (playerInRange && Input.GetKeyDown(activationKey) && !isCooldown)
         {
-            Rigidbody2D rb = collision.rigidbody;
-
-            // Vérifie si le joueur descend avant l'impact
-            if (rb.velocity.y < 0 && collision.contacts[0].point.y > transform.position.y)
-            {
-                if (pressCoroutine == null)
-                {
-                    pressCoroutine = StartCoroutine(PressButton());
-                }
-            }
+            ActivateButton();
         }
     }
 
-    private IEnumerator PressButton()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        isCooldown = true;
-        Vector3 pressedPosition = initialPosition - new Vector3(0, pressDepth, 0);
-
-        // Descente du bouton
-        float elapsedTime = 0;
-        while (elapsedTime < pressSpeed)
+        // Détecte si un Blop est proche
+        if (other.gameObject.transform.parent.CompareTag("RedBlop") || other.gameObject.transform.parent.CompareTag("BlueBlop"))
         {
-            transform.position = Vector3.Lerp(initialPosition, pressedPosition, elapsedTime / pressSpeed);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            playerInRange = other;
         }
-        transform.position = pressedPosition;
+    }
 
-        ActivateButton();
-
-        // Attente de la fin du cooldown
-        yield return new WaitForSeconds(cooldownTime);
-
-        // Remontée du bouton
-        elapsedTime = 0;
-        while (elapsedTime < pressSpeed)
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (playerInRange == other)
         {
-            transform.position = Vector3.Lerp(pressedPosition, initialPosition, elapsedTime / pressSpeed);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            playerInRange = null;
         }
-        transform.position = initialPosition;
-
-        isCooldown = false;
-        pressCoroutine = null;
     }
 
     private void ActivateButton()
     {
+        // Change le tag autorisé et la couleur de la Gate
         gate.ToggleGateTag();
         UpdateButtonColor();
+
+        StartCoroutine(Cooldown());
     }
 
     private void UpdateButtonColor()
     {
-        buttonRenderer.material.color = (gate.requiredTag == gate.tagOne) ? redColor : blueColor;
+        if (gate.requiredTag == gate.tagOne)
+        {
+            buttonRenderer.material.color = redColor;
+        }
+        else
+        {
+            buttonRenderer.material.color = blueColor;
+        }
+    }
+
+    private IEnumerator Cooldown()
+    {
+        isCooldown = true;
+        yield return new WaitForSeconds(cooldownTime);
+        isCooldown = false;
     }
 }

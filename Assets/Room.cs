@@ -1,24 +1,18 @@
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class Room
 {
-    public WinZone winZone;
-    public GameObject barrier;
-    public CinemachineVirtualCamera currentVCam;
-    public CinemachineVirtualCamera newVCam;
-
-    //private void Start()
-    //{
-    //    DontDestroyOnLoad(this.gameObject);
-    //}
-    void Update()
+    public Vector3 spawnPoint1;
+    public Vector3 spawnPoint2;
+    public GameObject vcam;
+    public int roomID;
+    public Room(Vector3 spawnPoint1, Vector3 spawnPoint2, GameObject vcam,int roomID)
     {
-        if (winZone.playerBlueInside && winZone.playerRedInside)
-        {
-            barrier.SetActive(false);
-            currentVCam.Priority = 5;
-            newVCam.Priority = 10;
-        }
+        this.spawnPoint1 = spawnPoint1;
+        this.spawnPoint2 = spawnPoint2;
+        this.vcam = vcam;
+        this.roomID = roomID;
     }
 }

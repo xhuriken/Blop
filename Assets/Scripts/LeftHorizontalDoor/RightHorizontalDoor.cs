@@ -10,14 +10,11 @@ public class RightHorizontalDoor : MonoBehaviour
     public float buttonPressDepth = 0.75f;
     public float speed = 1f; 
 
-    public float requiredDistance = 1f; 
     private Vector2 initialDoorPosition; 
     private Vector2 initialButtonPosition; 
     private bool doorOpened = false; 
     private float lerpTime = 0f; 
     private bool playerInRange = false;
-
-    public Transform[] players;
 
     void Start()
     {
@@ -27,9 +24,7 @@ public class RightHorizontalDoor : MonoBehaviour
 
     void Update()
     {
-        CheckPlayersInRange();
-
-        if (playerInRange && !doorOpened)
+        if (playerInRange && !doorOpened && Input.GetKeyDown(KeyCode.E))
         {
             doorOpened = true; 
         }
@@ -38,21 +33,6 @@ public class RightHorizontalDoor : MonoBehaviour
         {
             OpenDoor();
             PressButton();
-        }
-    }
-
-    void CheckPlayersInRange()
-    {
-        playerInRange = false; 
-
- 
-        foreach (Transform player in players)
-        {
-            if (Vector2.Distance(player.position, button.position) <= requiredDistance)
-            {
-                playerInRange = true;  
-                break; 
-            }
         }
     }
 
@@ -74,5 +54,21 @@ public class RightHorizontalDoor : MonoBehaviour
     void PressButton()
     {
         button.position = Vector2.Lerp(button.position, new Vector2(initialButtonPosition.x, initialButtonPosition.y - buttonPressDepth), speed * Time.deltaTime);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.transform.parent.CompareTag("BlueBlop") || other.gameObject.transform.parent.CompareTag("RedBlop"))
+        {
+            playerInRange = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.transform.parent.CompareTag("BlueBlop") || other.gameObject.transform.parent.CompareTag("RedBlop"))
+        {
+            playerInRange = false;
+        }
     }
 }

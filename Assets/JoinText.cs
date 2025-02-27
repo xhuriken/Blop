@@ -26,35 +26,38 @@ public class JoinText : MonoBehaviour
 
     private void OnPlayerJoined(PlayerInput player)
     {
-        if(SceneManager.GetActiveScene().name == "lvl1")
+        if(GameManager.Instance.currentRoom == null)
         {
-            Debug.Log("Player joined: " + player.playerIndex);
-
-            if (menuSpawnPoints == null || menuSpawnPoints.Length == 0)
+            if (SceneManager.GetActiveScene().name == "lvl1")
             {
-                GameObject spawn1 = GameObject.Find("SpawnPoint1");
-                GameObject spawn2 = GameObject.Find("SpawnPoint2");
+                Debug.Log("Player joined: " + player.playerIndex);
 
-                if (spawn1 != null && spawn2 != null)
+                if (menuSpawnPoints == null || menuSpawnPoints.Length == 0)
                 {
-                    menuSpawnPoints = new Transform[] { spawn1.transform, spawn2.transform };
-                    Debug.Log("Spawn points auto-assigned.");
-                }
-                else
-                {
-                    Debug.LogError("Spawn points not found in the scene! Make sure SpawnPoint1 and SpawnPoint2 exist.");
-                    return;
-                }
-            }
+                    GameObject spawn1 = GameObject.Find("SpawnPoint1");
+                    GameObject spawn2 = GameObject.Find("SpawnPoint2");
 
-            int playerIndex = playerInputManager.playerCount - 1;
+                    if (spawn1 != null && spawn2 != null)
+                    {
+                        menuSpawnPoints = new Transform[] { spawn1.transform, spawn2.transform };
+                        Debug.Log("Spawn points auto-assigned.");
+                    }
+                    else
+                    {
+                        Debug.LogError("Spawn points not found in the scene! Make sure SpawnPoint1 and SpawnPoint2 exist.");
+                        return;
+                    }
+                }
+
+                int playerIndex = playerInputManager.playerCount - 1;
         
-            player.transform.position = menuSpawnPoints[playerIndex].position;
+                player.transform.position = menuSpawnPoints[playerIndex].position;
 
 
-            if (playerInputManager.playerCount >= 2)
-            {
-                HideText("");
+                if (playerInputManager.playerCount >= 2)
+                {
+                    HideText("");
+                }
             }
         }
     }

@@ -9,7 +9,7 @@ public class Danger : MonoBehaviour
     {
         if (collision.gameObject.transform.parent.GetComponent<Player>() != null)
         {
-            if(collision.gameObject.transform.parent.GetComponent<Player>().isDead == false)
+            if(collision.gameObject.transform.parent.GetComponent<Player>().isDead == false && !GameManager.Instance.isPlayerDead)
             {
                 Debug.Log("___Player Tuch");
                 collision.gameObject.transform.parent.GetComponent<Player>().Die();

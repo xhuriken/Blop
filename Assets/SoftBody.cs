@@ -19,12 +19,12 @@ public class SoftBody : MonoBehaviour
 
     private void Start()
     {
-        GameObject[] blueBlops = GameObject.FindGameObjectsWithTag("BlueBlop");
-        if (blueBlops.Length > 1)
-        {
-            Debug.Log("Red ??");
+        //GameObject[] blueBlops = GameObject.FindGameObjectsWithTag("BlueBlop");
+        //if (blueBlops.Length > 1)
+        //{
+        //    Debug.Log("Red ??");
 
-        }
+        //}
     }
     void Update()
     {

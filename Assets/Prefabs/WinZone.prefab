@@ -5000,8 +5000,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6355409270811830613}
   - {fileID: 5255897308256531103}
+  - {fileID: 6355409270811830613}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &6961190895608488957
@@ -5063,3 +5063,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerBlueInside: 0
   playerRedInside: 0
+  currentRoom: 0
+  wasActive: 0
