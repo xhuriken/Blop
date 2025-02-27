@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -824616383
-  m_SortingLayer: 2
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -5177388603050735206, guid: 71ebafeef3c03457483266a33ab2b270, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5803922}
@@ -102,8 +102,9 @@ MonoBehaviour:
   blueColor: {r: 0.25490198, g: 0.8117647, b: 0.8117647, a: 1}
   gate: {fileID: 4017983282498347796}
   buttonRenderer: {fileID: 5964630786589552374}
-  cooldownTime: 3
-  activationKey: 101
+  cooldownTime: 0.5
+  pressDepth: 0.2
+  pressSpeed: 0.1
 --- !u!61 &5359442602466224066
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -133,10 +134,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.022298187, y: 0.11537385}
+  m_Offset: {x: -0.000990659, y: -0.001643464}
   m_SpriteTilingProperty:
     border: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
     pivot: {x: 0.5, y: 0.5}
@@ -147,7 +148,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.4662361, y: 1.2307476}
+  m_Size: {x: 0.9974708, y: 0.9967129}
   m_EdgeRadius: 0
 --- !u!1 &3551268796003078223
 GameObject:

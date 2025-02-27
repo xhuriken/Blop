@@ -232,8 +232,12 @@ MonoBehaviour:
   door: {fileID: 2992024602220342993}
   button: {fileID: 617626269345580142}
   openDistance: 8
-  buttonPressDepth: 0.75
+  buttonPressDepth: 0.7
   speed: 1
+  requiredDistance: 1
+  players:
+  - {fileID: 0}
+  - {fileID: 1054205678643502222, guid: cd95b20729bd8bf48b17899a5df918ee, type: 3}
 --- !u!61 &3132483252479518153
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -263,10 +267,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.018600345, y: 0.6680211}
+  m_Offset: {x: -0.002352655, y: 0.018395245}
   m_SpriteTilingProperty:
     border: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
     pivot: {x: 0.5, y: 0.5}
@@ -277,5 +281,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5828042, y: 2.3360424}
+  m_Size: {x: 1.0380436, y: 1.0367905}
   m_EdgeRadius: 0

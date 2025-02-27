@@ -173,7 +173,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.82, y: 0.7743945, z: 0}
-  m_LocalScale: {x: 1.1246653, y: 0.5364907, z: 1}
+  m_LocalScale: {x: 1.2964016, y: 0.71900475, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1549620115320743294}
@@ -248,7 +248,11 @@ MonoBehaviour:
   openDistance: 8
   buttonPressDepth: 0.5
   speed: 1
+  requiredDistance: 1
   isDoorBlocked: 0
+  players:
+  - {fileID: 0}
+  - {fileID: 1054205678643502222, guid: cd95b20729bd8bf48b17899a5df918ee, type: 3}
 --- !u!61 &6808201091913758926
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -278,10 +282,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.03544563, y: 0.76606154}
+  m_Offset: {x: 0.0025593042, y: 0.017564803}
   m_SpriteTilingProperty:
     border: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
     pivot: {x: 0.5, y: 0.5}
@@ -292,5 +296,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.6239868, y: 2.532123}
+  m_Size: {x: 1.0320361, y: 1.0351295}
   m_EdgeRadius: 0
