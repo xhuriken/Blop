@@ -6,11 +6,13 @@ public class Transition : MonoBehaviour
     private Vector3 maxScale = new Vector3(100, 100, 100);
     private Vector3 minScale = Vector3.zero;
     private float transitionTime = 2f;
+    [SerializeField] private AudioSource AudioSource;
 
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
         StartCoroutine(TransitionGrow());
+        AudioSource.Play();
     }
 
     public IEnumerator TransitionGrow()

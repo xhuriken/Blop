@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     private List<Rigidbody2D> points = new List<Rigidbody2D>(); // liste des points du blob
     private Dictionary<SpringJoint2D, float> springDistance = new Dictionary<SpringJoint2D, float>();
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip[] jumplist;
+    [SerializeField] private AudioClip[] audioDeath;
     private Rigidbody2D m_rb;
     private PlayerInput playerInput;
     public ParticleSystem deathParticles;
@@ -161,8 +164,10 @@ public class Player : MonoBehaviour
         {
             isInAir = true;
         }
-        if(groundedPointsCount > 0 && isInAir == true && (m_rb.velocity.y > 4f || m_rb.velocity.y < -4f || m_rb.velocity.x > 4f || m_rb.velocity.x < -4f))
+        if(groundedPointsCount > 0 && isInAir == true && (m_rb.velocity.y > 6f || m_rb.velocity.y < -6f || m_rb.velocity.x > 6f || m_rb.velocity.x < -6f))
         {
+            audioSource.clip = jumplist[Random.Range(0, jumplist.Length)];
+            audioSource.Play();
             anim.SetTrigger("Tuch");
             isInAir = false;
         }
@@ -229,6 +234,8 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
+        audioSource.clip = audioDeath[Random.Range(0, audioDeath.Length)];
+        audioSource.Play();
         if(isDead)
         {
             return;
