@@ -6,7 +6,7 @@ public class WinZone : MonoBehaviour
 {
     public bool playerBlueInside = false;
     public bool playerRedInside = false;
-    private GameObject barrier;
+    public GameObject barrier;
     public int currentRoom;    
     public bool wasActive = false;
 
