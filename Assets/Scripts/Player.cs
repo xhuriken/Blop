@@ -173,23 +173,27 @@ public class Player : MonoBehaviour
         }
 
         anim.SetBool("isDead", isDead);
-    }   
+    }
 
     public void GrowUp(InputAction.CallbackContext context)
     {
+        Gamepad gamepad = context.control.device as Gamepad;
+
         if (context.performed)
         {
             isGrowing = true;
             anim.SetBool("isGrowing", isGrowing);
             AdjustSpringJointsGrow(growthFactor);
-            Gamepad.current?.SetMotorSpeeds(0.3f, 0.3f);
+            // Vibrer uniquement le gamepad qui a généré l'événement
+            gamepad?.SetMotorSpeeds(0.3f, 0.3f);
         }
         else if (context.canceled)
         {
             isGrowing = false;
             anim.SetBool("isGrowing", isGrowing);
             AdjustSpringJointsShrink(shrinkFactor);
-            Gamepad.current?.SetMotorSpeeds(0.0f, 0.0f);
+            // Arrêter la vibration du gamepad associé
+            gamepad?.SetMotorSpeeds(0.0f, 0.0f);
         }
     }
 

@@ -5,6 +5,8 @@ using UnityEngine;
 public class Breakable_platform : MonoBehaviour
 {
     [SerializeField] float velocity;
+    [SerializeField] AudioSource audioSource;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,6 +19,7 @@ public class Breakable_platform : MonoBehaviour
 
     void breaking()
     {
+        audioSource.Play();
         for (int i = 0; i < 5; i++)
         {
             this.gameObject.transform.GetChild(i).GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
