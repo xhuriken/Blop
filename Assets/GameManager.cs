@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator reload()
     {
-        SceneManager.LoadScene("lvl1");
+        SceneManager.LoadScene("map");
         yield return new WaitForSeconds(0.2f);
         ReloadRooms();
         Debug.Log(currentRoom.spawnPoint1 + " | " + currentRoom.spawnPoint2 + " | " + currentRoom.roomID);

@@ -6,18 +6,18 @@ public class VerticalDoor : MonoBehaviour
     public Transform door;
     public Transform button;
 
-    public float openDistance = 8f;  
-    public float buttonPressDepth = 0.5f; 
-    public float speed = 1f; 
+    public float openDistance = 8f;
+    public float buttonPressDepth = 0.5f;
+    public float speed = 1f;
 
-    public float requiredDistance = 1f; 
+    public float requiredDistance = 1f;
     private Vector2 doorInitialPosition;
     private Vector2 buttonInitialPosition;
-    private bool buttonPressed = false; 
+    private bool buttonPressed = false;
 
     public bool isDoorBlocked = false;
 
-    public Transform[] players; 
+    public Transform[] players;
 
     void Start()
     {
@@ -27,8 +27,6 @@ public class VerticalDoor : MonoBehaviour
 
     void Update()
     {
-        CheckPlayersOnButton();
-
         if (buttonPressed)
         {
             OpenDoor();
@@ -44,19 +42,14 @@ public class VerticalDoor : MonoBehaviour
         }
     }
 
-    void CheckPlayersOnButton()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        buttonPressed = false;  
+        buttonPressed = true;
+    }
 
- 
-        foreach (Transform player in players)
-        {
-            if (Vector2.Distance(player.position, button.position) <= requiredDistance)
-            {
-                buttonPressed = true; 
-                break;
-            }
-        }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        buttonPressed = false;
     }
 
     void OpenDoor()
@@ -71,14 +64,14 @@ public class VerticalDoor : MonoBehaviour
 
     void PressButton()
     {
-        button.position = Vector2.Lerp(button.position, new Vector2(buttonInitialPosition.x, buttonInitialPosition.y - buttonPressDepth), speed * Time.deltaTime);
+        button.position = Vector2.Lerp(button.position, new Vector2(buttonInitialPosition.x, buttonInitialPosition.y - buttonPressDepth), 3f * Time.deltaTime);
     }
 
     void ReleaseButton()
     {
         if (!buttonPressed)
         {
-            button.position = Vector2.Lerp(button.position, buttonInitialPosition, speed * Time.deltaTime);
+            button.position = Vector2.Lerp(button.position, buttonInitialPosition, 3f * Time.deltaTime);
         }
     }
 }

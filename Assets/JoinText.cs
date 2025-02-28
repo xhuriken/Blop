@@ -28,7 +28,7 @@ public class JoinText : MonoBehaviour
     {
         if(GameManager.Instance.currentRoom == null)
         {
-            if (SceneManager.GetActiveScene().name == "lvl1")
+            if (SceneManager.GetActiveScene().name == "map")
             {
                 Debug.Log("Player joined: " + player.playerIndex);
 
