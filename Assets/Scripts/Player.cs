@@ -235,6 +235,7 @@ public class Player : MonoBehaviour
     public void Die()
     {
         audioSource.clip = audioDeath[Random.Range(0, audioDeath.Length)];
+        audioSource.Play();
         if(isDead)
         {
             return;

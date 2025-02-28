@@ -1073,7 +1073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16200a497be458499b94dd0931f9bb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 5734672916606812910}
   jumplist:
   - {fileID: 8300000, guid: e330d0b1772388b478f398d5890ff51e, type: 3}
   - {fileID: 8300000, guid: 05ef73ca20e684343a28aa0775ca7f62, type: 3}
