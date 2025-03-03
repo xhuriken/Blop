@@ -1088,12 +1088,13 @@ MonoBehaviour:
   acceleration: 5
   deceleration: 50
   envDeceleration: 50
-  growthFactor: 1.65
+  growthFactor: 1.7
   shrinkFactor: 0.9
   growEase: 24
   shrinkEase: 17
   growTime: 0.25
   shrinkTime: 0.1
+  isGrowing: 0
   isDead: 0
   animRed: {fileID: 9100000, guid: 973bf4789c8fe9640800be089ab5434e, type: 2}
   spriteRender: {fileID: 1347648553163508496}
